@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
-  attr_accessor :remember_token, :activation_token, :reset_token
+  attr_accessor :remember_token, :activation_token, :reset_token, 
+                :wepay_access_token, :wepay_account_id, :user_type
+
   before_save   :downcase_email
   before_create :create_activation_digest
   validates :name,  presence: true, length: { maximum: 50 }
@@ -7,9 +9,21 @@ class User < ActiveRecord::Base
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+  #validates :tag_line
+  #validates :street_one
+  #validates :street_two
+  #validates :city
+  #validates :state
+  #validates :zip_code
+  #validates :phone_number
+  #validates :website
+  #validates :description
+  #validates :category
+  #validates :tags
   has_secure_password 
   validates :password, length: { minimum: 6 }, allow_blank: true 
   has_many :microposts, dependent: :destroy
+  has_many :products, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
                                   foreign_key: "follower_id",
                                   dependent:   :destroy
